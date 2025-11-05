@@ -1,9 +1,16 @@
 <template>
   <div>
     <h1>{{ message }}</h1>
-    <Calendar :locale="lang" />
+    <Calendar
+      :initialDate="startDate"
+      :locale="lang"
+      @date-selected="handleDateSelected"
+    />
 
     <div>
+      <br />
+      <label>Start date (YYYY-MM-DD): <input v-model="startDate" /></label>
+      <br />
       <br />
       <label
         >Locale:
@@ -12,6 +19,9 @@
           <option value="ru">ru</option>
         </select>
       </label>
+      <br />
+      <br />
+      <label>Selected date: {{ selected }}</label>
     </div>
   </div>
 </template>
@@ -27,7 +37,14 @@ export default {
     return {
       message: "Hello World",
       lang: "ru",
+      startDate: null,
+      selected: null,
     };
+  },
+  methods: {
+    handleDateSelected(date) {
+      this.selected = date;
+    },
   },
 };
 </script>

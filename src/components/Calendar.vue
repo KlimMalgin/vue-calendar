@@ -34,13 +34,17 @@
 export default {
   name: "Calendar",
   props: {
+    initialDate: {
+      type: String,
+      default: null,
+    },
     locale: {
       type: String,
       default: "en",
     },
   },
   data() {
-    const today = this._getToday();
+    const today = this._parseDateString(this.initialDate) || this._getToday();
     return {
       message: "Hello World",
       displayYear: today.getFullYear(),
@@ -155,7 +159,7 @@ export default {
       }
       this.selectedDate = this._formatDateISO(d);
       this.$emit("date-selected", this.selectedDate);
-      // this.$emit("input", this.selectedDate);
+      this.$emit("input", this.selectedDate);
     },
     isSelected(date) {
       return this._formatDateISO(date) === this.selectedDate;
@@ -168,7 +172,22 @@ export default {
       const dd = d.getDate().toString().padStart(2, "0");
       return `${yyyy}-${mm}-${dd}`;
     },
-
+    _parseDateString(str) {
+      if (!str) return null;
+      const m = /^\s*(\d{4})-(\d{1,2})-(\d{1,2})\s*$/.exec(str);
+      if (!m) return null;
+      const y = parseInt(m[1], 10);
+      const mo = parseInt(m[2], 10) - 1;
+      const d = parseInt(m[3], 10);
+      const date = new Date(y, mo, d);
+      if (
+        date.getFullYear() !== y ||
+        date.getMonth() !== mo ||
+        date.getDate() !== d
+      )
+        return null;
+      return date;
+    },
     _getToday() {
       const now = new Date();
       return new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -193,6 +212,16 @@ export default {
         return jsWeekday === 0 ? 6 : jsWeekday - 1;
       }
       return jsWeekday;
+    },
+  },
+  watch: {
+    initialDate(newVal) {
+      console.log("initialDate", newVal);
+      const d = this._parseDateString(newVal) || this._getToday();
+      this.displayYear = d.getFullYear();
+      this.displayMonth = d.getMonth();
+      this.selectedDate = this._formatDateISO(d);
+      this.$emit("date-selected", this.selectedDate);
     },
   },
 };
