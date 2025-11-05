@@ -2,7 +2,7 @@
   <div class="calendar">
     <div class="calendar-header">
       <button class="nav" @click="prevMonth">‹</button>
-      <div class="title">{{ displayYear }} - {{ displayMonth }}</div>
+      <div class="title">{{ monthNames[displayMonth] }} {{ displayYear }}</div>
       <button class="nav" @click="nextMonth">›</button>
     </div>
 
@@ -155,7 +155,7 @@ export default {
       }
       this.selectedDate = this._formatDateISO(d);
       this.$emit("date-selected", this.selectedDate);
-      this.$emit("input", this.selectedDate);
+      // this.$emit("input", this.selectedDate);
     },
     isSelected(date) {
       return this._formatDateISO(date) === this.selectedDate;
