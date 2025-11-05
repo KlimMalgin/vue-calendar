@@ -1,7 +1,9 @@
 <template>
   <div class="calendar">
     <div class="calendar-header">
+      <button class="nav" @click="prevMonth">‹</button>
       <div class="title">{{ displayYear }} - {{ displayMonth }}</div>
+      <button class="nav" @click="nextMonth">›</button>
     </div>
 
     <div class="days">
@@ -69,7 +71,23 @@ export default {
   },
   methods: {
     // ------
-
+    prevMonth() {
+      if (this.displayMonth === 0) {
+        this.displayMonth = 11;
+        this.displayYear -= 1;
+      } else {
+        this.displayMonth -= 1;
+      }
+    },
+    nextMonth() {
+      if (this.displayMonth === 11) {
+        this.displayMonth = 0;
+        this.displayYear += 1;
+      } else {
+        this.displayMonth += 1;
+      }
+    },
+    // ------
     selectDate(cell) {
       const d = cell.date;
       if (!cell.inCurrentMonth) {
@@ -121,4 +139,54 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.calendar {
+  width: 320px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.title {
+  font-weight: 600;
+}
+.nav {
+  background: none;
+  border: 0;
+  font-size: 20px;
+  cursor: pointer;
+}
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: 40px;
+  gap: 4px;
+}
+.day-cell {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.day-cell.other-month {
+  opacity: 0.45;
+}
+.day-cell.today {
+  box-shadow: inset 0 0 0 2px #1976d2;
+}
+.day-cell.selected {
+  background: #1976d2;
+  color: #fff;
+}
+.day-number {
+  font-size: 14px;
+}
+</style>
