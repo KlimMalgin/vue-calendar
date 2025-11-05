@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>{{ message }}</h1>
-    <Calendar />
+    <Calendar :locale="lang" />
   </div>
 </template>
 
@@ -15,6 +15,7 @@ export default {
   data() {
     return {
       message: "Hello World",
+      lang: "ru",
     };
   },
 };

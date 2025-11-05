@@ -6,6 +6,12 @@
       <button class="nav" @click="nextMonth">›</button>
     </div>
 
+    <div class="weekdays">
+      <div v-for="(d, idx) in weekdayNames" :key="idx" class="weekday">
+        {{ d }}
+      </div>
+    </div>
+
     <div class="days">
       <div
         v-for="(cell, idx) in monthGrid"
@@ -27,6 +33,12 @@
 <script>
 export default {
   name: "Calendar",
+  props: {
+    locale: {
+      type: String,
+      default: "en",
+    },
+  },
   data() {
     const today = this._getToday();
     return {
@@ -34,9 +46,55 @@ export default {
       displayYear: today.getFullYear(),
       displayMonth: today.getMonth(),
       selectedDate: this._formatDateISO(today),
+
+      locales: {
+        en: {
+          months: [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ],
+          weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        },
+        ru: {
+          months: [
+            "Январь",
+            "Февраль",
+            "Март",
+            "Апрель",
+            "Май",
+            "Июнь",
+            "Июль",
+            "Август",
+            "Сентябрь",
+            "Октябрь",
+            "Ноябрь",
+            "Декабрь",
+          ],
+          weekdays: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
+        },
+      },
     };
   },
   computed: {
+    localeObj() {
+      return this.locales[this.locale] || this.locales.en;
+    },
+    monthNames() {
+      return this.localeObj.months;
+    },
+    weekdayNames() {
+      return this.localeObj.weekdays;
+    },
     monthGrid() {
       const year = this.displayYear;
       const month = this.displayMonth;
@@ -71,6 +129,7 @@ export default {
   },
   methods: {
     // ------
+
     prevMonth() {
       if (this.displayMonth === 0) {
         this.displayMonth = 11;
@@ -161,6 +220,17 @@ export default {
   border: 0;
   font-size: 20px;
   cursor: pointer;
+}
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 6px;
+}
+.weekday {
+  padding: 4px 0;
 }
 .days {
   display: grid;
