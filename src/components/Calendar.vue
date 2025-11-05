@@ -108,12 +108,6 @@ export default {
 
       const cells = [];
       for (let i = 0; i < 42; i++) {
-        console.log(
-          i,
-          startDate.getDate() + i,
-          startDate.getMonth(),
-          startDate.getFullYear()
-        );
         const d = new Date(
           startDate.getFullYear(),
           startDate.getMonth(),
@@ -216,7 +210,6 @@ export default {
   },
   watch: {
     initialDate(newVal) {
-      console.log("initialDate", newVal);
       const d = this._parseDateString(newVal) || this._getToday();
       this.displayYear = d.getFullYear();
       this.displayMonth = d.getMonth();

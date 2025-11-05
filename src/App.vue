@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      message: "Hello World",
+      message: "Calendar",
       lang: "ru",
       startDate: null,
       selected: null,
